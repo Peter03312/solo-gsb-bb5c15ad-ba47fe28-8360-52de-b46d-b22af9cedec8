@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>编辑工作台 · 口述史事件年表</title>
+  <link rel="stylesheet" href="/style.css" />
+</head>
+<body>
+  <header class="site">
+    <h1>编辑工作台</h1>
+    <div class="meta">
+      <a href="/">查看访客年表</a>
+      <span id="base-version" style="margin-left:12px"></span>
+    </div>
+  </header>
+
+  <main>
+    <div id="auth-modal" class="dialog-backdrop" hidden>
+      <div class="dialog">
+        <h3>需要编辑口令</h3>
+        <p class="muted">本机已配置 EDITOR_TOKEN，请输入口令后进入草稿编辑。</p>
+        <input type="password" id="token-input" placeholder="编辑口令" style="width:100%" />
+        <div class="row" style="margin-top:12px; justify-content:flex-end">
+          <button id="token-submit">进入</button>
+        </div>
+        <div id="auth-error" class="alert err" style="margin-top:10px" hidden></div>
+      </div>
+    </div>
+
+    <div id="global-message"></div>
+
+    <section class="card">
+      <h2>一、事件</h2>
+      <form id="event-form" class="row">
+        <label class="field" style="flex:2">
+          事件标题
+          <input type="text" name="title" required maxlength="200" placeholder="如：第一次迁村" />
+        </label>
+        <label class="field" style="flex:3">
+          事件描述
+          <input type="text" name="description" maxlength="2000" placeholder="可选" />
+        </label>
+        <button type="submit">新增事件</button>
+      </form>
+      <div id="events" style="margin-top:14px"></div>
+    </section>
+
+    <section class="card">
+      <h2>二、“先于”关系（严格：前一事件必须早于后一事件至少一天）</h2>
+      <form id="relation-form" class="row">
+        <select name="predecessor_id" required></select>
+        <span>先于</span>
+        <select name="successor_id" required></select>
+        <label class="field" style="flex:2">
+          依据 / 备注（可选）
+          <input type="text" name="note" maxlength="1000" />
+        </label>
+        <button type="submit">新增关系</button>
+      </form>
+      <div id="relations" style="margin-top:10px"></div>
+    </section>
+
+    <section class="card">
+      <h2>三、发布前校验</h2>
+      <div id="validation"></div>
+      <p class="muted">
+        校验会自动随选择更新。粗粒度（年/月）主张按其覆盖的时间区间处理；
+        只有所有事件都能在自身区间内选出满足全部严格先后关系的具体日期时，才允许发布。
+      </p>
+    </section>
+
+    <div class="publish-bar">
+      <section class="card">
+        <div class="row between">
+          <div>
+            <strong>依据版本：</strong><span id="publish-base"></span>
+          </div>
+          <div class="row">
+            <label class="field">
+              版本说明（可选）
+              <input type="text" id="publish-note" maxlength="500" placeholder="如：增补第二章" />
+            </label>
+            <button id="publish-button">发布不可变版本</button>
+          </div>
+        </div>
+        <div id="conflict-box" style="margin-top:12px" hidden>
+          <div class="alert warn">
+            <h4>版本冲突：在你编辑期间，他人已发布了新版本</h4>
+            <div id="conflict-detail"></div>
+            <label style="display:block;margin-top:8px">
+              <input type="checkbox" id="conflict-ack" />
+              我已查看下方最新已发布年表，并在最新版本基础上重新确认了每个事件的主张选择，
+              同意据此重新发布（不会静默覆盖他人版本）。
+            </label>
+          </div>
+          <div class="card" style="margin-top:8px" id="conflict-timeline"></div>
+        </div>
+      </section>
+    </div>
+  </main>
+
+  <script src="/editor.js"></script>
+</body>
+</html>

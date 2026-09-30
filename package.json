@@ -1,0 +1,17 @@
+{
+  "name": "oral-history-chronicle",
+  "version": "1.0.0",
+  "description": "地方口述史事件年表：多主张、出处、严格先后关系与不可变发布版本",
+  "type": "module",
+  "main": "src/server.js",
+  "scripts": {
+    "start": "node src/server.js",
+    "test": "node --test test/"
+  },
+  "engines": {
+    "node": ">=20"
+  },
+  "dependencies": {
+    "sql.js": "^1.12.0"
+  }
+}

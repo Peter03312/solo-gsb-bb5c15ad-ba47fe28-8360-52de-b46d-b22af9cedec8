@@ -1,0 +1,23 @@
+services:
+  chronicle:
+    build: .
+    image: oral-history-chronicle:latest
+    container_name: oral-history-chronicle
+    ports:
+      - "${HOST_PORT:-8080}:8080"
+    environment:
+      # 编辑口令：留空表示本机不鉴权；设置后编辑接口需在登录框输入
+      EDITOR_TOKEN: "${EDITOR_TOKEN:-}"
+      DB_PATH: /app/data/chronicle.sqlite
+    volumes:
+      - chronicle-data:/app/data
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD", "node", "-e", "fetch('http://127.0.0.1:8080/api/timeline').then(r=>process.exit(r.ok?0:1)).catch(()=>process.exit(1))"]
+      interval: 30s
+      timeout: 5s
+      retries: 3
+      start_period: 5s
+
+volumes:
+  chronicle-data:
